@@ -1,0 +1,39 @@
+version: "3.3"
+services:
+  backend:
+    image: fergalmoran/xtream-backend
+    container_name: "xtream-backend"
+    environment:
+      - TZ=Europe/Dublin
+    networks:
+      - "traefik_proxy"
+    restart: always
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.xtream-backend.rule=Host(`api.streams.fergl.ie`)"
+      - "traefik.http.routers.xtream-backend.entrypoints=websecure"
+      - "traefik.http.routers.xtream-backend.tls.certresolver=noodles-resolver"
+      - "traefik.http.services.xtream-backend.loadbalancer.server.port=80"
+  frontend:
+    image: fergalmoran/xtream-frontend
+    container_name: "xtream-frontend"
+    environment:
+      - TZ=Europe/Dublin
+    networks:
+      - "traefik_proxy"
+    restart: always
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.xtream-frontend.rule=Host(`streams.fergl.ie`)"
+      - "traefik.http.routers.xtream-frontend.entrypoints=websecure"
+      - "traefik.http.routers.xtream-frontend.tls.certresolver=noodles-resolver"
+      - "traefik.http.services.xtream-frontend.loadbalancer.server.port=80"
+
+networks:
+  traefik_proxy:
+    external: true
+    name: traefik_proxy

@@ -1,0 +1,3 @@
+class MPVPlayer:
+    pass
+
