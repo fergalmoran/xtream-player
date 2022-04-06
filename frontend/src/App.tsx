@@ -10,7 +10,7 @@ function App() {
         <Sidebar />
         <div className="flex flex-col flex-1">
           <div className="flex h-16 p-4 bg-gray-100">Header</div>
-          <main className="flex flex-1 px-4 pt-5 overflow-y-auto">
+          <main className="flex flex-1 overflow-y-auto">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="live/channel/:channelId" element={<ChannelPage />} />

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { Stream } from "../models/stream";
+const EPGComponent = React.lazy(() => import("../components/epg.component")); // Lazy-loaded
+
 const ChannelPage = () => {
   let params = useParams();
 
@@ -47,9 +49,9 @@ const ChannelPage = () => {
     }
   };
   return (
-    <div className="flex flex-col w-full h-screen ">
+    <div className="flex flex-col w-full h-screen p-4">
       <table className="font-semibold leading-normal table-auto">
-        <thead className="sticky top-0 font-semibold text-left text-white uppercase bg-indigo-500">
+        <thead className="sticky top-0 z-10 font-semibold text-left text-white uppercase bg-indigo-500">
           <tr className="">
             <th className="text-lg uppercase border-b border-gray-200 1px-5">
               Channel name
@@ -58,48 +60,59 @@ const ChannelPage = () => {
             <th className="py-3 border-b border-gray-200 1px-5"></th>
           </tr>
         </thead>
-        <tbody className="divide-y ">
+        <tbody className="z-0 overflow-y-scroll divide-y">
           {streams.map((stream: Stream) => (
-            <tr key={stream.num}>
-              <td className="px-5 py-5 text-sm border-b border-gray-200">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <img
-                      alt="stream"
-                      src={
-                        stream.stream_icon ||
-                        `${process.env.PUBLIC_URL}/icons/unknown-stream.png`
-                      }
-                      className="object-cover w-10 h-10 mx-auto rounded-full "
-                    />
+            <>
+              <tr key={stream.num}>
+                <td className="px-5 py-5 text-sm border-b border-gray-200">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <img
+                        alt="stream"
+                        src={
+                          stream.stream_icon ||
+                          `${process.env.PUBLIC_URL}/icons/unknown-stream.png`
+                        }
+                        className="object-cover w-10 h-10 mx-auto rounded-full "
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {stream.name}
+                      </p>
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      {stream.name}
-                    </p>
-                  </div>
-                </div>
-              </td>
+                </td>
 
-              <td className="px-5 py-5 text-sm border-b border-gray-200">
-                <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-green-200 rounded-full opacity-50"
-                  ></span>
-                  <span className="relative">{stream.stream_type}</span>
-                </span>
-              </td>
-              <td className="px-5 py-5 text-sm border-b border-gray-200">
-                <button onClick={() => playStream(stream.stream_id)}>
-                  <img
-                    className="w-10 h-10 "
-                    src={`${process.env.PUBLIC_URL}/icons/play.svg`}
-                    alt="Play"
-                  />
-                </button>
-              </td>
-            </tr>
+                <td className="px-5 py-5 text-sm border-b border-gray-200">
+                  <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-green-200 rounded-full opacity-50"
+                    ></span>
+                    <span className="relative">{stream.stream_type}</span>
+                  </span>
+                </td>
+                <td className="px-5 py-5 text-sm border-b border-gray-200">
+                  <button onClick={() => playStream(stream.stream_id)}>
+                    <img
+                      className="w-10 h-10 "
+                      src={`${process.env.PUBLIC_URL}/icons/play.svg`}
+                      alt="Play"
+                    />
+                  </button>
+                </td>
+              </tr>
+              {stream.epg_channel_id && (
+                <tr key={`${stream.num}-epg`}>
+                  <td colSpan={3} className="bg-red-500">
+                    <Suspense fallback={<h1>Loading epg</h1>}>
+                      <EPGComponent channelId={stream.epg_channel_id} />
+                    </Suspense>
+                  </td>
+                </tr>
+              )}
+            </>
           ))}
         </tbody>
       </table>

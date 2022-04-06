@@ -1,11 +1,18 @@
+import logging
+from logging.config import dictConfig
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from . import config
-from .lib.streamer import Streamer
-from .lib.xtream import XTream
+from app import config
+from app.config import log_config
+from app.lib.epg.epg import EPGParser
+from app.lib.streamer import Streamer
+from app.lib.xtream import XTream
+
+dictConfig(log_config)
 
 provider = XTream(
     config.provider['server'],
@@ -13,6 +20,9 @@ provider = XTream(
     config.provider['password']
 )
 
+epg = EPGParser(
+    config.provider['epgurl']
+)
 app = FastAPI()
 origins = [
     "https://dev-streams.fergl.ie:3000",
@@ -30,6 +40,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/epg/{channel_id}")
+async def get_channel_epg(channel_id):
+    listings = epg.get_listings(channel_id)
+    return listings
 
 
 @app.get("/channels")
