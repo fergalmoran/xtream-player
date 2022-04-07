@@ -4,7 +4,7 @@ export interface Stream {
   stream_type: string;
   stream_id: number;
   stream_icon: string;
-  epg_channel_id: null;
+  epg_channel_id: string;
   added: number;
   category_id: number;
   custom_sid: string;
