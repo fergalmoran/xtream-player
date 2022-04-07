@@ -9,7 +9,7 @@ interface ISidebarProviderContext {
   closeSidebar: () => void;
 }
 export const SidebarContext = React.createContext<ISidebarProviderContext>({
-  isSidebarOpen: true,
+  isSidebarOpen: false,
   toggleSidebar: () => {},
   closeSidebar: () => {},
 });

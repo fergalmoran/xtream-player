@@ -1,7 +1,21 @@
+import {
+  Table,
+  TableHeader,
+  TableCell,
+  TableBody,
+  TableRow,
+  TableContainer,
+  Badge,
+  Avatar,
+  Button,
+} from "@windmill/react-ui";
 import React, { Suspense } from "react";
 import { useParams } from "react-router-dom";
+import { AiOutlinePlayCircle } from "react-icons/ai";
+import { FaChromecast } from "react-icons/fa";
 import { Stream } from "../models/stream";
-const EPGComponent = React.lazy(() => import("../components/epg.component")); // Lazy-loaded
+import { convertEpochToSpecificTimezone } from "../utils/date-utils";
+import { EPGComponent } from "../components";
 
 const ChannelPage = () => {
   let params = useParams();
@@ -49,74 +63,89 @@ const ChannelPage = () => {
     }
   };
   return (
-    <div className="flex flex-col w-full h-screen p-4">
-      <table className="font-semibold leading-normal table-auto">
-        <thead className="sticky top-0 z-10 font-semibold text-left text-white uppercase bg-indigo-500">
-          <tr className="">
-            <th className="text-lg uppercase border-b border-gray-200 1px-5">
-              Channel name
-            </th>
-            <th className="border-b border-gray-200 1px-5">Type</th>
-            <th className="py-3 border-b border-gray-200 1px-5"></th>
+    <TableContainer className="mb-8">
+      <Table>
+        <TableHeader>
+          <tr>
+            <TableCell>Channel</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell></TableCell>
           </tr>
-        </thead>
-        <tbody className="z-0 overflow-y-scroll divide-y">
-          {streams.map((stream: Stream) => (
-            <>
-              <tr key={stream.num}>
-                <td className="px-5 py-5 text-sm border-b border-gray-200">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <img
-                        alt="stream"
-                        src={
-                          stream.stream_icon ||
-                          `${process.env.PUBLIC_URL}/icons/unknown-stream.png`
-                        }
-                        className="object-cover w-10 h-10 mx-auto rounded-full "
-                      />
-                    </div>
-                    <div className="ml-3">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {stream.name}
-                      </p>
-                    </div>
+        </TableHeader>
+        <TableBody>
+          {streams.map((stream: Stream) => [
+            <TableRow key={stream.num}>
+              <TableCell>
+                <div className="flex items-center text-sm">
+                  <Avatar
+                    className="hidden w-10 h-10 ml-2 mr-3 md:block"
+                    src={stream.stream_icon}
+                    alt="Stream icon"
+                  />
+                  <div>
+                    <p className="font-semibold">{stream.name}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      Added: {convertEpochToSpecificTimezone(stream.added)}
+                    </p>
                   </div>
-                </td>
-
-                <td className="px-5 py-5 text-sm border-b border-gray-200">
-                  <span className="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900">
-                    <span
+                </div>
+              </TableCell>
+              <TableCell>
+                <Badge type={`primary`}>{stream.stream_type}</Badge>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center space-x-4">
+                  <Button
+                    layout="link"
+                    size="small"
+                    aria-label="Edit"
+                    onClick={() => playStream(stream.stream_id)}
+                  >
+                    <AiOutlinePlayCircle
+                      className="w-6 h-6"
                       aria-hidden="true"
-                      className="absolute inset-0 bg-green-200 rounded-full opacity-50"
-                    ></span>
-                    <span className="relative">{stream.stream_type}</span>
-                  </span>
-                </td>
-                <td className="px-5 py-5 text-sm border-b border-gray-200">
-                  <button onClick={() => playStream(stream.stream_id)}>
-                    <img
-                      className="w-10 h-10 "
-                      src={`${process.env.PUBLIC_URL}/icons/play.svg`}
-                      alt="Play"
                     />
-                  </button>
+                  </Button>
+                  <Button
+                    layout="link"
+                    size="small"
+                    aria-label="Delete"
+                    onClick={() => {
+                      var mediaInfo = new chrome.cast.media.MediaInfo(
+                        currentMediaURL,
+                        contentType
+                      );
+                      var request = new chrome.cast.media.LoadRequest(
+                        mediaInfo
+                      );
+                      castSession.loadMedia(request).then(
+                        function () {
+                          console.log("Load succeed");
+                        },
+                        function (errorCode) {
+                          console.log("Error code: " + errorCode);
+                        }
+                      );
+                    }}
+                  >
+                    <FaChromecast className="w-5 h-5" aria-hidden="true" />
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>,
+            <tr key={`${stream.num}-epg`}>
+              {false && (
+                <td colSpan={3} className="px-4 py-2 mt-8 border-4 shadow-md">
+                  <Suspense fallback={<h1>Loading epg</h1>}>
+                    <EPGComponent channelId={stream.epg_channel_id} />
+                  </Suspense>
                 </td>
-              </tr>
-              {stream.epg_channel_id && (
-                <tr key={`${stream.num}-epg`}>
-                  <td colSpan={3} className="bg-red-500">
-                    <Suspense fallback={<h1>Loading epg</h1>}>
-                      <EPGComponent channelId={stream.epg_channel_id} />
-                    </Suspense>
-                  </td>
-                </tr>
               )}
-            </>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tr>,
+          ])}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

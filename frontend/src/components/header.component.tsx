@@ -54,7 +54,7 @@ const Header = () => {
             <Input
               css=""
               className="pl-8 text-gray-700"
-              placeholder="Search for projects"
+              placeholder="Search for channels"
               aria-label="Search"
             />
           </div>
@@ -118,7 +118,7 @@ const Header = () => {
             >
               <Avatar
                 className="align-middle"
-                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                src="https://placebeard.it/32/32"
                 alt=""
                 aria-hidden="true"
               />

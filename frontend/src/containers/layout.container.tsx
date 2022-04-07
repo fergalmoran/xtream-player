@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
 import { useLocation, Routes, Route } from "react-router-dom";
-import { Sidebar } from "../components";
 import Header from "../components/header.component";
 import Main from "./main.container";
 import { ChannelPage, PlayerPage } from "../pages";
 import ThemedSuspence from "../components/themed-suspence.component";
 import { SidebarContext } from "../context";
+import Sidebar from "../components/sidebar";
 
 const Layout = () => {
   const { isSidebarOpen, closeSidebar } = React.useContext(SidebarContext);
