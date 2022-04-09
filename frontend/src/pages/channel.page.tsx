@@ -89,7 +89,7 @@ const ChannelPage = () => {
   };
   return (
     <CastProvider>
-      <TableContainer className="mb-8">
+      <TableContainer className="mt-5 mb-8">
         <Table>
           <TableHeader>
             <tr>

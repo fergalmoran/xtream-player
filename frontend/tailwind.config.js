@@ -2,6 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 const windmill = require("@windmill/react-ui/config");
 
 const config = {
+  darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -14,6 +15,5 @@ const config = {
 };
 
 module.exports = {
-  ...windmill(config),
   ...config,
 };
