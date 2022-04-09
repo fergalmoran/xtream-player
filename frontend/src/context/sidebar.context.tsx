@@ -9,26 +9,26 @@ interface ISidebarProviderContext {
   closeSidebar: () => void;
 }
 export const SidebarContext = React.createContext<ISidebarProviderContext>({
-  isSidebarOpen: false,
+  isSidebarOpen: true,
   toggleSidebar: () => {},
   closeSidebar: () => {},
 });
 
 export const SidebarProvider = ({ children }: ISidebarProvider) => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 
-  const toggleSidebar = () => {
+  const _toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  const closeSidebar = () => {
+  const _closeSidebar = () => {
     setIsSidebarOpen(false);
   };
 
   const value = React.useMemo(
     () => ({
       isSidebarOpen,
-      toggleSidebar,
-      closeSidebar,
+      toggleSidebar: _toggleSidebar,
+      closeSidebar: _closeSidebar,
     }),
     [isSidebarOpen]
   );
