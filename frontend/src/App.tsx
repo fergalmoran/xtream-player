@@ -8,9 +8,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         {localStorage.getItem("server") ? (
-          <Route path="/*" element={<OnboardingPage />} />
+          <>
+            <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/*" element={<Layout />} />
+          </>
         ) : (
-          <Route path="/*" element={<Layout />} />
+          <Route path="/*" element={<OnboardingPage />} />
         )}
       </Routes>
     </BrowserRouter>

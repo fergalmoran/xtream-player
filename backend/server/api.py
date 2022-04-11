@@ -1,11 +1,10 @@
 import logging
 
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from server import config
 from server.lib.streamer import Streamer
 from server.lib.xtream import XTream
 
@@ -21,8 +20,6 @@ origins = [
     "https://streams.fergl.ie",
     "http://127.0.0.1:35729",
     "http://localhost:35729",
-    "https://bitmovin.com",
-    "https://players.akamai.com",
 ]
 
 app.add_middleware(
@@ -45,6 +42,22 @@ def __get_provider(request: Request):
         request.headers.get("x-xtream-username"),
         request.headers.get("x-xtream-password"),
     )
+
+
+@app.get("/validate")
+async def validate_crendentials(request: Request, response: Response):
+    try:
+        provider = __get_provider(request)
+        categories = provider.get_categories().json()
+        if type(categories) is list:
+            return {"status": "accepted"}
+    except ValueError as e:
+        logger.error(e)
+    except Exception as e:
+        logger.error(e)
+
+    response.status_code = 401
+    return {"status": "denied"}
 
 
 @app.get("/channels")
