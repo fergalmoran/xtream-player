@@ -15,15 +15,9 @@ from server.lib.xtream import XTream
 logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-provider = XTream(
-    config.provider['server'],
-    config.provider['username'],
-    config.provider['password']
-)
-
-epg = EPGParser(
-    config.provider['epgurl']
-)
+# epg = EPGParser(
+#     config.provider['epgurl']
+# )
 app = FastAPI()
 origins = [
     "https://dev-streams.fergl.ie:3000",
@@ -43,10 +37,17 @@ app.add_middleware(
 )
 
 
-@app.get("/epg/{channel_id}")
-async def get_channel_epg(channel_id):
-    listings = epg.get_listings(channel_id)
-    return listings
+# @app.get("/epg/{channel_id}")
+# async def get_channel_epg(channel_id):
+#     listings = epg.get_listings(channel_id)
+#     return listings
+
+def __get_provider(request):
+    return XTream(
+        config.provider['server'],
+        config.provider['username'],
+        config.provider['password']
+    )
 
 
 @app.get("/channels")
