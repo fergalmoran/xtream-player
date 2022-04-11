@@ -1,18 +1,6 @@
-import {
-  Table,
-  TableHeader,
-  TableCell,
-  TableBody,
-  TableRow,
-  TableContainer,
-  Badge,
-  Avatar,
-  Button,
-} from "@windmill/react-ui";
 import React, { Suspense } from "react";
 import { useParams } from "react-router-dom";
 import { AiOutlinePlayCircle } from "react-icons/ai";
-import { FaChromecast } from "react-icons/fa";
 import { Stream } from "../models/stream";
 import { convertEpochToSpecificTimezone } from "../utils/date-utils";
 import { EPGComponent } from "../components";
@@ -23,6 +11,8 @@ import {
   useMedia,
 } from "../utils/chromecast";
 import { toast } from "react-toastify";
+import { Table, TableBody, TableCell, TableContainer, TableHeader, TableRow } from "../components/widgets/table";
+import { Avatar, Badge, Button } from "../components/widgets";
 
 const ChannelPage = () => {
   let params = useParams();
@@ -142,11 +132,11 @@ const ChannelPage = () => {
       <TableContainer className="mt-5 mb-8">
         <Table>
           <TableHeader>
-            <tr>
+            <TableRow>
               <TableCell>Channel</TableCell>
               <TableCell>Type</TableCell>
               <TableCell></TableCell>
-            </tr>
+            </TableRow>
           </TableHeader>
           <TableBody>
             {streams.map((stream: Stream) => [

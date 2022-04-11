@@ -1,7 +1,7 @@
 import React from "react";
 import useCast from "./useCast";
-import { Button } from "@windmill/react-ui";
 import { FaChromecast } from "react-icons/fa";
+import { Button } from "../../components/widgets";
 
 interface ICastButtonProps {
   streamId: number;

@@ -1,24 +1,13 @@
 import React from "react";
 import { VscDebug } from "react-icons/vsc";
-import {
-  Avatar,
-  Badge,
-  Input,
-  Dropdown,
-  DropdownItem,
-} from "@windmill/react-ui";
+import { BsFillMoonStarsFill, BsFillSunFill, BsSearch } from "react-icons/bs";
+import { BiLogOutCircle, BiCog } from "react-icons/bi";
+import { IoMdPerson } from "react-icons/io";
+import { AiOutlineMenu, AiOutlineBell } from "react-icons/ai";
 import { SidebarContext, ThemeContext } from "../context";
-import {
-  BellIcon,
-  MenuIcon,
-  MoonIcon,
-  OutlineCogIcon,
-  OutlineLogoutIcon,
-  OutlinePersonIcon,
-  SearchIcon,
-  SunIcon,
-} from "../icons";
+
 import { toast } from "react-toastify";
+import { Avatar, Badge, Input, Dropdown, DropdownItem } from "./widgets";
 
 const Header = () => {
   const { toggleSidebar } = React.useContext(SidebarContext);
@@ -53,15 +42,14 @@ const Header = () => {
           onClick={toggleSidebar}
           aria-label="Menu"
         >
-          <MenuIcon className="w-6 h-6" aria-hidden="true" />
+          <AiOutlineMenu className="w-6 h-6" aria-hidden="true" />
         </button>
         <div className="flex justify-center flex-1 lg:mr-32">
           <div className="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
             <div className="absolute inset-y-0 flex items-center pl-2">
-              <SearchIcon className="w-4 h-4" aria-hidden="true" />
+              <BsSearch className="w-4 h-4" aria-hidden="true" />
             </div>
             <Input
-              css=""
               className="h-8 pl-8 text-gray-700"
               placeholder="Search for channels"
               aria-label="Search"
@@ -85,9 +73,9 @@ const Header = () => {
               aria-label="Toggle color mode"
             >
               {theme === "dark" ? (
-                <SunIcon className="w-5 h-5" aria-hidden="true" />
+                <BsFillSunFill className="w-5 h-5" aria-hidden="true" />
               ) : (
-                <MoonIcon className="w-5 h-5" aria-hidden="true" />
+                <BsFillMoonStarsFill className="w-5 h-5" aria-hidden="true" />
               )}
             </button>
           </li>
@@ -99,7 +87,7 @@ const Header = () => {
               aria-label="Notifications"
               aria-haspopup="true"
             >
-              <BellIcon className="w-5 h-5" aria-hidden="true" />
+              <AiOutlineBell className="w-5 h-5" aria-hidden="true" />
               {/* <!-- Notification badge --> */}
               <span
                 aria-hidden="true"
@@ -146,21 +134,15 @@ const Header = () => {
               onClose={() => setIsProfileMenuOpen(false)}
             >
               <DropdownItem tag="a" href="#">
-                <OutlinePersonIcon
-                  className="w-4 h-4 mr-3"
-                  aria-hidden="true"
-                />
+                <IoMdPerson className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Profile</span>
               </DropdownItem>
               <DropdownItem tag="a" href="#">
-                <OutlineCogIcon className="w-4 h-4 mr-3" aria-hidden="true" />
+                <BiCog className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Settings</span>
               </DropdownItem>
               <DropdownItem onClick={() => alert("Log out!")}>
-                <OutlineLogoutIcon
-                  className="w-4 h-4 mr-3"
-                  aria-hidden="true"
-                />
+                <BiLogOutCircle className="w-4 h-4 mr-3" aria-hidden="true" />
                 <span>Log out</span>
               </DropdownItem>
             </Dropdown>
