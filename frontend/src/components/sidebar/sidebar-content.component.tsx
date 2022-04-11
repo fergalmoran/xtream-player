@@ -1,16 +1,18 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import { Channel } from "../../models/channel";
+import { ApiService } from "../../services";
 
 const SidebarContent = () => {
   const [channels, setChannels] = React.useState<Channel[]>([]);
   const [filteredChannels, setFilteredChannels] = React.useState<Channel[]>([]);
   React.useEffect(() => {
     const fetchChannels = async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/channels`);
-      const data = await res.json();
-      setChannels(data);
-      setFilteredChannels(data);
+      const res = await ApiService.getChannels();
+      if (res) {
+        setChannels(res);
+        setFilteredChannels(res);
+      }
     };
 
     fetchChannels().catch(console.error);

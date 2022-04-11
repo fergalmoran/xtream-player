@@ -130,7 +130,7 @@ const defaultTheme = {
   },
   // Input
   input: {
-    base: "block w-full text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md",
+    base: "block w-full text-sm focus:outline-none dark:text-gray-300 leading-5 rounded-md h-8 p-2",
     active:
       "focus:border-purple-400 border-gray-300 dark:border-gray-600 focus:ring focus:ring-purple-300 dark:focus:border-gray-600 dark:focus:ring-gray-300 dark:bg-gray-700",
     disabled: "cursor-not-allowed opacity-50 bg-gray-300 dark:bg-gray-800",

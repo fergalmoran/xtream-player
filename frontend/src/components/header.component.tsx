@@ -50,7 +50,7 @@ const Header = () => {
               <BsSearch className="w-4 h-4" aria-hidden="true" />
             </div>
             <Input
-              className="h-8 pl-8 text-gray-700"
+              className="pl-8 text-gray-700"
               placeholder="Search for channels"
               aria-label="Search"
             />

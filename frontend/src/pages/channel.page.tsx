@@ -11,8 +11,16 @@ import {
   useMedia,
 } from "../utils/chromecast";
 import { toast } from "react-toastify";
-import { Table, TableBody, TableCell, TableContainer, TableHeader, TableRow } from "../components/widgets/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHeader,
+  TableRow,
+} from "../components/widgets/table";
 import { Avatar, Badge, Button } from "../components/widgets";
+import { ApiService } from "../services";
 
 const ChannelPage = () => {
   let params = useParams();
@@ -24,31 +32,20 @@ const ChannelPage = () => {
 
   React.useEffect(() => {
     const fetchChannels = async () => {
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/streams/${params.channelId}`
-      );
-      const data = await res.json();
-      setStreams(data);
+      if (params.channelId) {
+        const data = await ApiService.getStreams(params.channelId);
+        setStreams(data);
+      }
     };
 
     fetchChannels().catch(console.error);
   }, [params.channelId]);
 
-  const _getStreamUrl = async (streamId: number) => {
-    const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/live/stream/url/${streamId}`
-    );
-    if (res.status !== 200) {
-      alert("Failed to get stream url");
-      return;
-    }
-    const data = await res.json();
-    return data?.url;
-  };
+
 
   const _cast = React.useCallback(
     async (streamId: number) => {
-      const streamUrl = await _getStreamUrl(streamId);
+      const streamUrl = await ApiService.getStreamUrl(streamId);
       if (streamUrl) {
         await media.playMedia(streamUrl);
       }
@@ -60,7 +57,7 @@ const ChannelPage = () => {
     console.log("channel.page", "handleXHR", args);
   };
   const playStream = async (streamId: number) => {
-    const url = await _getStreamUrl(streamId);
+    const url = await ApiService.getStreamUrl(streamId);
     if (url) {
       const mpv_args =
         "--keep-open=yes\n--geometry=1024x768-0-0\n--ontop\n--screen=2\n--ytdl-format=bestvideo[ext=mp4][height<=?720]+bestaudio[ext=m4a]\n--border=no".split(
