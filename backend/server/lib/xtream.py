@@ -1,6 +1,6 @@
 from enum import Enum
 
-from app.lib.cache import Cache
+from server.lib.cache import Cache
 import requests
 
 

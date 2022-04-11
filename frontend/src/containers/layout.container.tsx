@@ -6,7 +6,6 @@ import { ChannelPage, PlayerPage } from "../pages";
 import ThemedSuspence from "../components/themed-suspence.component";
 import { SidebarContext } from "../context";
 import Sidebar from "../components/sidebar";
-
 const Layout = () => {
   const { isSidebarOpen, closeSidebar } = React.useContext(SidebarContext);
   let location = useLocation();
@@ -16,9 +15,9 @@ const Layout = () => {
   }, [location]);
   return (
     <div
-      className={`flex h-screen bg-gray-50 dark:bg-gray-900 ${
+      className={`flex h-screen bg-gray-50 dark:bg-gray-900 xtreamium-font ${
         isSidebarOpen && "overflow-hidden"
-      }`}
+      } `}
     >
       <Sidebar />
 

@@ -6,7 +6,7 @@ import requests
 
 import logging
 
-from app.lib.epg import xmltv
+from server.lib.epg import xmltv
 
 log = logging.getLogger(__name__)
 

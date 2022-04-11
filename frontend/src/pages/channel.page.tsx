@@ -22,6 +22,7 @@ import {
   useCast,
   useMedia,
 } from "../utils/chromecast";
+import { toast } from "react-toastify";
 
 const ChannelPage = () => {
   let params = useParams();
@@ -80,11 +81,60 @@ const ChannelPage = () => {
         `?play_url=` +
         encodeURIComponent(url) +
         [""].concat(mpv_args.map(encodeURIComponent)).join("&mpv_args=");
-
-      const xhr = new XMLHttpRequest();
-      xhr.onreadystatechange = handleXHR;
-      xhr.open("GET", `${process.env.REACT_APP_SERVER_URL}/${query}`, true);
-      xhr.send();
+      try {
+        var response = await fetch(
+          `${process.env.REACT_APP_SERVER_URL}/${query}`
+        );
+        console.log("channel.page", "playStream", response);
+        if (response.status === 501) {
+          toast(
+            <>
+              <div className="font-bold text-gray-800">
+                🚫 Unable to play stream!
+              </div>
+              <div className="text-gray-700 font-sm">
+                Cannot find mpv installation.
+              </div>
+              <a
+                className="font-bold text-indigo-600"
+                href="https://github.com/fergalmoran/xtreamium/#installmpv"
+                target="_blank"
+                rel="noreferrer"
+              >
+                See here
+              </a>
+            </>,
+            {
+              position: "top-right",
+              closeOnClick: true,
+            }
+          );
+        }
+      } catch (e) {
+        console.log(e);
+        toast(
+          <>
+            <div className="font-bold text-gray-800">
+              🚫 Unable to play stream!
+            </div>
+            <div className="text-gray-700 font-sm">
+              Make sure you've installed the local server.
+            </div>
+            <a
+              className="font-bold text-indigo-600"
+              href="https://github.com/fergalmoran/xtreamium/#localserver"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instructions here
+            </a>
+          </>,
+          {
+            position: "top-right",
+            closeOnClick: true,
+          }
+        );
+      }
     }
   };
   return (
@@ -126,8 +176,7 @@ const ChannelPage = () => {
                       layout="link"
                       aria-label="Edit"
                       onClick={() => playStream(stream.stream_id)}
-                    >
-                    </Button>
+                    ></Button>
                     <CastButton streamId={stream.stream_id} onPlay={_cast} />
                   </div>
                 </TableCell>

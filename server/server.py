@@ -49,9 +49,11 @@ class CORSRequestHandler(SimpleHTTPRequestHandler):
                              query.get("mpv_args", []))
             except FileNotFoundError as e:
                 missing_bin('mpv')
-        self.send_response(200, "playing...")
+                self.send_response(501, "mpv application missing...")
+                self.end_headers()
+                return
 
-        self.send_response(200)
+        self.send_response(200, "playing...")
         self.end_headers()
 
 

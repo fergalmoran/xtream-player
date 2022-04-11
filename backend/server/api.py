@@ -6,13 +6,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from app import config
-from app.config import log_config
-from app.lib.epg.epg import EPGParser
-from app.lib.streamer import Streamer
-from app.lib.xtream import XTream
+from server import config
+from server.config import log_config
+from server.lib.epg.epg import EPGParser
+from server.lib.streamer import Streamer
+from server.lib.xtream import XTream
 
-dictConfig(log_config)
+logging.basicConfig(format="%(levelname)s:%(message)s", level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 provider = XTream(
     config.provider['server'],

@@ -1,13 +1,13 @@
 import React from "react";
+import { VscDebug } from "react-icons/vsc";
 import {
   Avatar,
   Badge,
   Input,
   Dropdown,
   DropdownItem,
-  WindmillContext,
 } from "@windmill/react-ui";
-import { SidebarContext } from "../context";
+import { SidebarContext, ThemeContext } from "../context";
 import {
   BellIcon,
   MenuIcon,
@@ -18,15 +18,26 @@ import {
   SearchIcon,
   SunIcon,
 } from "../icons";
+import { toast } from "react-toastify";
 
 const Header = () => {
-  const { mode, toggleMode } = React.useContext(WindmillContext);
   const { toggleSidebar } = React.useContext(SidebarContext);
-
+  const { theme, toggleTheme } = React.useContext(ThemeContext);
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] =
     React.useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = React.useState(false);
 
+  const _debuggles = () => {
+    toast("🦄 Wow so easy!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
   const handleNotificationsClick = () => {
     setIsNotificationsMenuOpen(!isNotificationsMenuOpen);
   };
@@ -51,7 +62,7 @@ const Header = () => {
             </div>
             <Input
               css=""
-              className="pl-8 text-gray-700"
+              className="h-8 pl-8 text-gray-700"
               placeholder="Search for channels"
               aria-label="Search"
             />
@@ -61,10 +72,19 @@ const Header = () => {
           <li className="flex">
             <button
               className="rounded-md focus:outline-none focus:shadow-outline-purple"
-              onClick={toggleMode}
+              onClick={_debuggles}
               aria-label="Toggle color mode"
             >
-              {mode === "dark" ? (
+              <VscDebug className="w-4 h-4" aria-hidden="true" />
+            </button>
+          </li>
+          <li className="flex">
+            <button
+              className="rounded-md focus:outline-none focus:shadow-outline-purple"
+              onClick={toggleTheme}
+              aria-label="Toggle color mode"
+            >
+              {theme === "dark" ? (
                 <SunIcon className="w-5 h-5" aria-hidden="true" />
               ) : (
                 <MoonIcon className="w-5 h-5" aria-hidden="true" />

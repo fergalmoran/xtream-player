@@ -47,7 +47,7 @@ function useStorageTheme(
 }
 
 // create context
-export const ThemeContext = React.createContext({});
+export const ThemeContext = React.createContext<any>({});
 interface IThemeProvider {
   children: React.ReactChild;
 }
@@ -58,8 +58,10 @@ export const ThemeProvider = ({ children }: IThemeProvider) => {
   // update root element class on theme change
   const oldTheme = usePrevious(theme);
   useLayoutEffect(() => {
-    document.documentElement.classList.remove(`theme-${oldTheme}`);
-    document.documentElement.classList.add(`theme-${theme}`);
+    if (oldTheme) {
+      document.documentElement.classList.remove(oldTheme);
+    }
+    document.documentElement.classList.add(theme);
   }, [theme, oldTheme]);
 
   function toggleTheme() {

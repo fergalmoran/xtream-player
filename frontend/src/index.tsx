@@ -4,14 +4,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { SidebarProvider } from "./context";
-import { Windmill } from "@windmill/react-ui";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "./context/theme.context";
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <React.StrictMode>
+    <ToastContainer />
     <SidebarProvider>
-      <Windmill usePreferences>
+      <ThemeProvider>
         <App />
-      </Windmill>
+      </ThemeProvider>
     </SidebarProvider>
   </React.StrictMode>,
   document.getElementById("root")

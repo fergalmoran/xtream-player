@@ -1,5 +1,4 @@
 const defaultTheme = require("tailwindcss/defaultTheme");
-const windmill = require("@windmill/react-ui/config");
 
 const config = {
   darkMode: "class",
@@ -7,7 +6,7 @@ const config = {
   theme: {
     extend: {
       fontFamily: {
-        Rampart: ["Raleway", "sans-serif"],
+        'xtreamium-font': ["Raleway", "sans-serif"],
       },
     },
   },
