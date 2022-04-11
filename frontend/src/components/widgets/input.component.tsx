@@ -6,13 +6,23 @@ export interface InputProps extends React.ComponentPropsWithRef<"input"> {
   valid?: boolean;
   disabled?: boolean;
   type?: string;
+  formControlName?: string;
+  register?: any;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
   props,
   ref
 ) {
-  const { valid, disabled, className, type = "text", ...other } = props;
+  const {
+    valid,
+    disabled,
+    className,
+    type = "text",
+    formControlName,
+    register,
+    ...other
+  } = props;
 
   const { input } = defaultTheme;
   const baseStyle = input.base;

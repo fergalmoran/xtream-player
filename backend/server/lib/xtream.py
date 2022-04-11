@@ -18,6 +18,9 @@ class XTream:
     _cache = Cache()
 
     def __init__(self, server, username, password):
+        if not (server and username and password):
+            raise ValueError("XTream: must specify server, username and password")
+        
         self._server = server
         self._username = username
         self._password = password

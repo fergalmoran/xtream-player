@@ -3,3 +3,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  scrollbar-width: thin;
+}
+
+.scroller:hover::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb,
+#aside.scroller:hover::-webkit-scrollbar-thumb {
+  @apply rounded;
+}
+
+html {
+  @apply overflow-auto;
+  scrollbar-color: #9ca3af #e5e7eb;
+}
+
+.scroller:hover::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb {
+  @apply bg-gray-400;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+html.dark {
+  scrollbar-color: #374151 #111827;
+}
+
+html.dark.scroller:hover::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+html.dark.scroller:hover::-webkit-scrollbar-thumb {
+  @apply bg-gray-700;
+}
+
+html.dark.scroller:hover::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-600;
+}

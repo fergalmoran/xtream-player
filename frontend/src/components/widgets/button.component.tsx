@@ -65,12 +65,12 @@ const Button = React.forwardRef<Ref, ButtonProps>(function Button(props, ref) {
     return !!icon || !!iconLeft || !!iconRight;
   }
 
-  console.warn(
-    hasIcon() && !other["aria-label"] && !children,
-    "Button",
-    'You are using an icon button, but no "aria-label" attribute was found. Add an "aria-label" attribute to work as a label for screen readers.'
-  );
-
+  if (hasIcon() && !other["aria-label"] && !children) {
+    console.warn(
+      "Button",
+      'You are using an icon button, but no "aria-label" attribute was found. Add an "aria-label" attribute to work as a label for screen readers.'
+    );
+  }
   const IconLeft = iconLeft || icon;
   const IconRight = iconRight;
 
